@@ -18,3 +18,4 @@ ecmascript@0.9.0              # Enable ECMAScript2015+ syntax in app code
 
 vsivsi:job-collection
 session
+percolate:synced-cron
