@@ -1,5 +1,29 @@
 import { Meteor } from 'meteor/meteor';
 
+
+SyncedCron.add({
+    name: 'Create a random job if nothing is running',
+    schedule: function(parser) {
+        // parser is a later.parse object
+        return parser.text('every 2 minutes');
+    },
+    job: function() {
+        if(!Jobs.findOne({status: {$in: ['ready', 'running']}, 'data.repeat': {$gt: -1}})){
+
+            function getRandomInt(min, max) {
+                min = Math.ceil(min);
+                max = Math.floor(max);
+                return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+            }
+
+            const patterns = ["Rotate", "Fade", "Blink", "Solid", "MultiFade", "MultiJump"];
+            const colors = ['RED', 'GREEN', 'BLUE'];
+
+            Meteor.call('addCommand', patterns[getRandomInt(0, patterns.length)], colors[getRandomInt(0, colors.length)])
+        }
+    }
+});
+
 Meteor.startup(() => {
 
     Jobs.startJobServer();
