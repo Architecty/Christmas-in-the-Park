@@ -1,25 +1,96 @@
 <head>
-  <title>Christmas in the Park</title>
+    <title>Christmas in the Park</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
 </head>
 
 <body>
-  <h1>Welcome to Meteor!</h1>
-
-  {{> hello}}
-  {{> info}}
+{{>colorModal}}
+{{>patternModal}}
+{{> hello}}
 </body>
 
 <template name="hello">
-  <button>Click Me</button>
-  <p>You've pressed the button {{counter}} times.</p>
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <br>
+                <img src='/images/logo.png'>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-12 text-center">
+                Choose a pattern and a color for the tree, then watch it jump into life!
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-5 text-right align-middle">Pattern:</div>
+            <div class="col-7">
+                <button class="btn btn-block btn-lg btn-light" data-toggle="modal" data-target="#patternModal">Random</button>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-5 text-right align-middle">Color:</div>
+            <div class="col-7">
+                <button class="btn btn-block btn-lg btn-light" data-toggle="modal" data-target="#colorModal">Random</button>
+            </div>
+        </div>
+        <br><br>
+        <div class="row">
+            <div class="col-12 text-center">
+                <button class="btn btn-lg btn-success" data-toggle="modal" data-target="#colorModal">Change the tree!</button>
+            </div>
+        </div>
+    </div>
 </template>
 
-<template name="info">
-  <h2>Learn Meteor!</h2>
-  <ul>
-    <li><a href="https://www.meteor.com/try" target="_blank">Do the Tutorial</a></li>
-    <li><a href="http://guide.meteor.com" target="_blank">Follow the Guide</a></li>
-    <li><a href="https://docs.meteor.com" target="_blank">Read the Docs</a></li>
-    <li><a href="https://forums.meteor.com" target="_blank">Discussions</a></li>
-  </ul>
+<template name="colorModal">
+    <div class="modal" tabindex="-1" role="dialog" id="colorModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="row">
+                            {{>colorButton}}
+                        {{>colorButton}}
+                        {{>colorButton}}
+                        {{>colorButton}}
+                        {{>colorButton}}
+                        {{>colorButton}}
+                        {{>colorButton}}
+                        {{>colorButton}}
+                        {{>colorButton}}
+                        {{>colorButton}}
+                        {{>colorButton}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template name="colorButton">
+    <div class="col-4" style="padding:2px">
+        <button class="btn btn-lg btn-block">{{name}}</button>
+    </div>
+</template>
+
+<template name="patternModal">
+    <div class="modal" tabindex="-1" role="dialog" id="patternModal">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <button class="btn btn-block btn-light">Rotate</button>
+                    <button class="btn btn-block btn-light">Fade</button>
+                    <button class="btn btn-block btn-light">Blink</button>
+                    <button class="btn btn-block btn-light">Solid</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
