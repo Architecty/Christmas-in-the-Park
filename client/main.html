@@ -2,6 +2,7 @@
     <title>Christmas in the Park</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <script src="https://use.fontawesome.com/eaf2c0fd90.js"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
@@ -22,29 +23,69 @@
             </div>
         </div>
         <hr>
-        <div class="row">
-            <div class="col-12 text-center">
-                Choose a pattern and a color for the tree, then watch it jump into life!
-            </div>
+        <div id="content">
+            {{>Template.dynamic template=whichTemplate}}
         </div>
-        <br>
-        <div class="row">
-            <div class="col-5 text-right align-middle">Pattern:</div>
-            <div class="col-7">
-                <button class="btn btn-block btn-lg btn-light" data-toggle="modal" data-target="#patternModal">Random</button>
-            </div>
+    </div>
+</template>
+
+<template name="choices">
+    <div class="row">
+        <div class="col-12 text-center">
+            Choose a pattern and a color for the tree, then watch it jump into life!
         </div>
-        <br>
-        <div class="row">
-            <div class="col-5 text-right align-middle">Color:</div>
-            <div class="col-7">
-                <button class="btn btn-block btn-lg btn-light" data-toggle="modal" data-target="#colorModal">Random</button>
-            </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-5 text-right align-middle">Pattern:</div>
+        <div class="col-7">
+            <button class="btn btn-block btn-lg btn-light" data-toggle="modal" data-target="#patternModal">{{selectedPattern.name}}</button>
         </div>
-        <br><br>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-5 text-right align-middle">Color:</div>
+        <div class="col-7">
+            <button class="btn btn-block btn-lg" style="background: {{selectedColor.hex}}" data-toggle="modal" data-target="#colorModal">{{selectedColor.name}}</button>
+        </div>
+    </div>
+    <br><br>
+    <div class="row">
+        <div class="col-12 text-center">
+            <button class="btn btn-lg btn-success" id="updateTree">Change the tree!</button>
+        </div>
+    </div>
+</template>
+
+<template name="uploading">
+    <div class="text-center">
+        Uploading to Tree
+    </div>
+</template>
+
+<template name="waiting">
+    <div class="text-center">
+        <p>Your request has been uploading to the tree, and it will be showing up soon.</p>
+
+        <p>You are currently number {{positionInLine}} in line!</p>
+    </div>
+</template>
+
+<template name="playing">
+    <div class="text-center">
+        Your request is now playing!
+    </div>
+</template>
+
+<template name="finished">
+    <div class="text-center">
+        <p>Your request is been played!</p>
+
+        <p>Would you like to give the tree a new command?</p>
+
         <div class="row">
-            <div class="col-12 text-center">
-                <button class="btn btn-lg btn-success" data-toggle="modal" data-target="#colorModal">Change the tree!</button>
+            <div class="col-md-4 offset-md-4 col-sm-6 offset-sm-3 col-xs-12">
+                <button class="btn btn-success btn-block" id="clearJob_id">Yes, let me do another!</button>
             </div>
         </div>
     </div>
@@ -54,19 +95,11 @@
     <div class="modal" tabindex="-1" role="dialog" id="colorModal">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <div class="modal-body">
+                <div class="modal-body" style="padding: 25px">
                     <div class="row">
+                        {{#each colors}}
                             {{>colorButton}}
-                        {{>colorButton}}
-                        {{>colorButton}}
-                        {{>colorButton}}
-                        {{>colorButton}}
-                        {{>colorButton}}
-                        {{>colorButton}}
-                        {{>colorButton}}
-                        {{>colorButton}}
-                        {{>colorButton}}
-                        {{>colorButton}}
+                        {{/each}}
                     </div>
                 </div>
             </div>
@@ -75,8 +108,8 @@
 </template>
 
 <template name="colorButton">
-    <div class="col-4" style="padding:2px">
-        <button class="btn btn-lg btn-block">{{name}}</button>
+    <div class="col-md-4 col-sm-6 col-xs-12" style="padding:2px">
+        <button class="btn btn-lg btn-block" style="background: {{hex}}">{{name}}</button>
     </div>
 </template>
 
@@ -84,13 +117,20 @@
     <div class="modal" tabindex="-1" role="dialog" id="patternModal">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
-                <div class="modal-body">
-                    <button class="btn btn-block btn-light">Rotate</button>
-                    <button class="btn btn-block btn-light">Fade</button>
-                    <button class="btn btn-block btn-light">Blink</button>
-                    <button class="btn btn-block btn-light">Solid</button>
+                <div class="modal-body" style="padding: 25px">
+                    <div class="row">
+                        {{#each patterns}}
+                            {{>patternButton}}
+                        {{/each}}
+                    </div>
                 </div>
             </div>
         </div>
+    </div>
+</template>
+
+<template name="patternButton">
+    <div class="col-sm-6 col-xs-12" style="padding:2px">
+        <button class="btn btn-lg btn-block btn-light" data-type="{{name}}"><span class="pull-left">{{{icon}}}</span> {{name}}</button>
     </div>
 </template>

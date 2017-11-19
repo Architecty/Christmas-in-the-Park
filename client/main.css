@@ -1,1 +1,28 @@
 /* CSS declarations go here */
+.fadeinout {
+    -webkit-animation: fadeinout 4s linear infinite;
+    animation: fadeinout 4s linear infinite;
+}
+
+@-webkit-keyframes fadeinout {
+    0% { opacity: .25; }
+    50% { opacity: 1; }
+    100% { opacity: .25; }
+}
+
+@keyframes fadeinout {
+    0% { opacity: .25; }
+    50% { opacity: 1; }
+    100% { opacity: .25; }
+}
+
+.blink {
+    -webkit-animation: blinker 1s step-start infinite;
+    animation: blinker 1s step-start infinite;
+}
+
+@keyframes blinker {
+    0% { opacity: 0; }
+    50% { opacity: 1; }
+    100% { opacity: 0; }
+}
