@@ -60,6 +60,22 @@ Meteor.startup(() => {
                     actions.push(createAction('ALL', color, 5000));
                     repeat = 0;
                     break;
+                case "MultiFade":
+                    actions.push(createAction('ALL', 'FADE', 10000));
+                    for(let i = 0; i < 6; i++){
+                        actions.push(createAction([i], 'FADE', 500));
+                    }
+                    createAction([], 'FADE', 10000)
+                    repeat = 0;
+                    break;
+                case "MultiJump":
+                    actions.push(createAction('ALL', 'JUMP', 5000));
+                    for(let i = 0; i < 6; i++){
+                        actions.push(createAction([i], 'JUMP', 500));
+                    }
+                    createAction([], 'JUMP', 10000)
+                    repeat = 0;
+                    break;
             }
 
             const siteJob = new Job(Jobs, 'commandTree', {actions: actions, repeat: repeat})
