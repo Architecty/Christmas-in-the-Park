@@ -1,4 +1,5 @@
 allow-deny@1.1.0
+amplify@1.0.0
 autoupdate@1.3.12
 babel-compiler@6.24.7
 babel-runtime@1.1.1
@@ -50,6 +51,7 @@ mongo@1.3.0
 mongo-dev-server@1.1.0
 mongo-id@1.0.6
 mrt:later@1.6.1
+mrt:session-amplify@0.1.1
 npm-mongo@2.2.33
 observe-sequence@1.0.16
 ordered-dict@1.0.9

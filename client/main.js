@@ -27,7 +27,7 @@ const patternList = [
 
 Template.hello.onCreated(function(){
     this.autorun(()=>{
-        this.subscribe('jobs', Session.get('job_id'));
+        this.subscribe('jobs', SessionAmplify.get('job_id'));
     })
     Session.setDefault('pattern', 'Random');
     Session.setDefault('color', 'Random');
@@ -36,19 +36,19 @@ Template.hello.onCreated(function(){
 
 Template.hello.helpers({
   whichTemplate() {
-      if(!Session.get('job_id')){
+      if(!SessionAmplify.get('job_id')){
          console.log('choices');
           return 'choices'
-      } else if(Session.get('job_id') === 'delay'){
+      } else if(SessionAmplify.get('job_id') === 'delay'){
           console.log('uploading');
           return 'uploading';
-      } else if (Session.get('job_id') && Jobs.findOne({_id: Session.get('job_id'), status: 'ready'})){
+      } else if (SessionAmplify.get('job_id') && Jobs.findOne({_id: SessionAmplify.get('job_id'), status: 'ready'})){
           console.log('waiting');
           return 'waiting';
-      } else if (Session.get('job_id') && Jobs.findOne({_id: Session.get('job_id'), status: 'running'})){
+      } else if (SessionAmplify.get('job_id') && Jobs.findOne({_id: SessionAmplify.get('job_id'), status: 'running'})){
          console.log('playing');
           return 'playing';
-      } else if(Session.get('job_id') && !Jobs.findOne({_id: Session.get('job_id')})){
+      } else if(SessionAmplify.get('job_id') && !Jobs.findOne({_id: SessionAmplify.get('job_id')})){
           return 'finished';
       }
   }
@@ -62,7 +62,7 @@ Template.waiting.helpers({
 
 Template.finished.events({
     'click #clearJob_id'(e){
-        Session.set('job_id', null);
+        SessionAmplify.set('job_id', null);
     }
 })
 
@@ -90,14 +90,14 @@ Template.choices.events({
 
 
 
-        Session.set('job_id', 'delay');
+        SessionAmplify.set('job_id', 'delay');
         Meteor.call('addCommand', pattern, color, function (err, result){
             if(err){
                 alert(err);
             }
             if(result){
                 setTimeout(function(){
-                    Session.set('job_id', result);
+                    SessionAmplify.set('job_id', result);
                 }, 3000)
             }
         });
