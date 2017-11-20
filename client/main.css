@@ -16,6 +16,21 @@
     100% { opacity: .25; }
 }
 
+.fadetransition {
+    -webkit-animation: fadetransition .5s linear 1;
+    animation: fadetransition .5s linear 1;
+}
+
+@-webkit-keyframes fadetransition {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+@keyframes fadetransition {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
 .blink {
     -webkit-animation: blinker 1s step-start infinite;
     animation: blinker 1s step-start infinite;

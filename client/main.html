@@ -30,41 +30,43 @@
 </template>
 
 <template name="choices">
-    <div class="row">
-        <div class="col-12 text-center">
-            Choose a pattern and a color for the tree, then watch it jump into life!
+    <div class="fadetransition">
+        <div class="row">
+            <div class="col-12 text-center">
+                Choose a pattern and a color for the tree, then watch it jump into life!
+            </div>
         </div>
-    </div>
-    <br>
-    <div class="row">
-        <div class="col-5 text-right align-middle">Pattern:</div>
-        <div class="col-7">
-            <button class="btn btn-block btn-lg btn-light" data-toggle="modal" data-target="#patternModal">{{selectedPattern.name}}</button>
+        <br>
+        <div class="row">
+            <div class="col-5 text-right align-middle">Pattern:</div>
+            <div class="col-7">
+                <button class="btn btn-block btn-lg btn-light" data-toggle="modal" data-target="#patternModal">{{selectedPattern.name}}</button>
+            </div>
         </div>
-    </div>
-    <br>
-    <div class="row">
-        <div class="col-5 text-right align-middle">Color:</div>
-        <div class="col-7">
-            <button class="btn btn-block btn-lg" style="background: {{selectedColor.hex}}" data-toggle="modal" data-target="#colorModal">{{selectedColor.name}}</button>
+        <br>
+        <div class="row">
+            <div class="col-5 text-right align-middle">Color:</div>
+            <div class="col-7">
+                <button class="btn btn-block btn-lg" style="background: {{selectedColor.hex}}" data-toggle="modal" data-target="#colorModal">{{selectedColor.name}}</button>
+            </div>
         </div>
-    </div>
-    <br><br>
-    <div class="row">
-        <div class="col-12 text-center">
-            <button class="btn btn-lg btn-success" id="updateTree">Change the tree!</button>
+        <br><br>
+        <div class="row">
+            <div class="col-12 text-center">
+                <button class="btn btn-lg btn-success" id="updateTree">Change the tree!</button>
+            </div>
         </div>
     </div>
 </template>
 
 <template name="uploading">
-    <div class="text-center">
+    <div class="text-center fadetransition">
         Uploading to Tree
     </div>
 </template>
 
 <template name="waiting">
-    <div class="text-center">
+    <div class="text-center fadetransition">
         <p>Your request has been uploading to the tree, and it will be showing up soon.</p>
 
         <p>You are currently number {{positionInLine}} in line!</p>
@@ -72,13 +74,13 @@
 </template>
 
 <template name="playing">
-    <div class="text-center">
+    <div class="text-center fadetransition">
         Your request is now playing!
     </div>
 </template>
 
 <template name="finished">
-    <div class="text-center">
+    <div class="text-center fadetransition">
         <p>Your request is been played!</p>
 
         <p>Would you like to give the tree a new command?</p>
