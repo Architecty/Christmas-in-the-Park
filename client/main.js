@@ -4,54 +4,63 @@ import { ReactiveVar } from 'meteor/reactive-var';
 import './main.html';
 
 const colorList = [
-    {name: "Random", hex: 'linear-gradient(135deg, #ff0202 3%,#fbff1e 19%,#3cff1e 35%,#1effff 51%,#1e61ff 65%,#ec1eff 78%,#ff1e7c 91%,#ff1e22 100%)'},
-    {name: "Red", hex: '#FF001E'},
-    {name: "Green", hex: '#32FF17'},
-    {name: "Blue", hex: '#173AFF'},
-    {name: "Teal", hex: '#4EF2F0'},
-    {name: "Seafoam", hex: '#67DBAD'},
-    {name: "Violet", hex: '#B156DB'},
-    {name: "Pink", hex: '#DB56DB'},
-    {name: "White", hex: '#FFF'}
+    {name: "Random",            key: 'RANDOM',      hex: '#eee'},
+    {name: "Red",               key: 'RED',         hex: '#FF001E'},
+    {name: "Green",             key: 'GREEN',       hex: '#32FF17'},
+    {name: "Blue",              key: 'BLUE',        hex: '#0040FF'},
+    {name: "Yellow",            key: 'YELLOW',      hex: '#FFFA00'},
+    {name: "Pale Green",        key: 'PALE_GREEN',  hex: '#61F36A'},
+    {name: "Tinted Green",      key: 'TINTED_GREEN',hex: '#ACFFB1'},
+    {name: "Seafoam",           key: 'SEAFOAM',     hex: '#67DBAD'},
+    {name: "Teal",              key: 'TEAL',        hex: '#4EF2F0'},
+    {name: "Light Blue",        key: 'LIGHT_BLUE',  hex: '#8CFFFF'},
+    {name: "Violet",            key: 'VIOLET',      hex: '#CF9EFF'},
+    {name: "Purple",            key: 'PURPLE',      hex: '#9742EA'},
+    {name: "Pink",              key: 'PINK',        hex: '#F892F8'},
+    {name: "Pale Blue",         key: 'WHITE',       hex: '#CCFFFF'}
 ];
 
 const patternList = [
     {name: "Random", icon: "?"},
-    {name: "Rotate", icon: '<i class="fa fa-spinner fa-pulse fa-fw"></i>'},
+    //{name: "Rotate", icon: '<i class="fa fa-spinner fa-pulse fa-fw"></i>'},
     {name: "Fade", icon: '<i class="fa fa-spinner fadeinout"></i>'},
     {name: "Blink", icon: '<i class="fa fa-spinner blink"></i>'},
     {name: "Solid", icon: '<i class="fa fa-spinner"></i>'}
-]
+];
 
 
 
 Template.hello.onCreated(function(){
     this.autorun(()=>{
         this.subscribe('jobs', SessionAmplify.get('job_id'));
-    })
+});
     Session.setDefault('pattern', 'Random');
     Session.setDefault('color', 'Random');
-    Session.setDefault('whichTemplate', 'choices')
-})
+    Session.setDefault('whichTemplate', 'choices');
+
+    if(SessionAmplify.get('job_id') === 'delay'){
+        setTimeout(()=>{
+            if(SessionAmplify.get('job_id') === 'delay'){
+            SessionAmplify.set('job_id', null);
+        }
+    }, 2500);
+    }
+});
 
 Template.hello.helpers({
-  whichTemplate() {
-      if(!SessionAmplify.get('job_id')){
-         console.log('choices');
-          return 'choices'
-      } else if(SessionAmplify.get('job_id') === 'delay'){
-          console.log('uploading');
-          return 'uploading';
-      } else if (SessionAmplify.get('job_id') && Jobs.findOne({_id: SessionAmplify.get('job_id'), status: 'ready'})){
-          console.log('waiting');
-          return 'waiting';
-      } else if (SessionAmplify.get('job_id') && Jobs.findOne({_id: SessionAmplify.get('job_id'), status: 'running'})){
-         console.log('playing');
-          return 'playing';
-      } else if(SessionAmplify.get('job_id') && !Jobs.findOne({_id: SessionAmplify.get('job_id')})){
-          return 'finished';
-      }
-  }
+    whichTemplate() {
+        if(!SessionAmplify.get('job_id')){
+            return 'choices'
+        } else if(SessionAmplify.get('job_id') === 'delay'){
+            return 'uploading';
+        } else if (SessionAmplify.get('job_id') && Jobs.findOne({_id: SessionAmplify.get('job_id'), status: 'ready'})){
+            return 'waiting';
+        } else if (SessionAmplify.get('job_id') && Jobs.findOne({_id: SessionAmplify.get('job_id'), status: 'running'})){
+            return 'playing';
+        } else if(SessionAmplify.get('job_id') && !Jobs.findOne({_id: SessionAmplify.get('job_id')})){
+            return 'finished';
+        }
+    }
 })
 
 Template.waiting.helpers({
@@ -68,12 +77,12 @@ Template.finished.events({
 
 Template.choices.helpers({
     selectedColor() {
-        return colorList.filter(val => val.name === Session.get('color'))
-            .reduce((sum, val) => {sum = val});
+        return colorList.filter(val => val.key === Session.get('color'))
+    .reduce((sum, val) => {sum = val});
     },
     selectedPattern() {
         return patternList.filter(val => val.name === Session.get('pattern'))
-            .reduce((sum, val) => {sum = val});
+    .reduce((sum, val) => {sum = val});
     },
 });
 
@@ -98,7 +107,7 @@ Template.choices.events({
             if(result){
                 setTimeout(function(){
                     SessionAmplify.set('job_id', result);
-                }, 3000)
+                }, 2500)
             }
         });
     },
@@ -112,7 +121,7 @@ Template.colorModal.helpers({
 
 Template.colorModal.events({
     'click button'(event, instance) {
-        Session.set('color', $(event.currentTarget).text());
+        Session.set('color', $(event.currentTarget).data('key'));
         $("#colorModal").modal('hide');
     },
 });

@@ -20,3 +20,4 @@ vsivsi:job-collection
 session
 percolate:synced-cron
 mrt:session-amplify
+accounts-password

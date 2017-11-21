@@ -5,7 +5,7 @@ SyncedCron.add({
     name: 'Create a random job if nothing is running',
     schedule: function(parser) {
         // parser is a later.parse object
-        return parser.text('every 2 minutes');
+        return parser.text('every 5 minutes');
     },
     job: function() {
         if(!Jobs.findOne({status: {$in: ['ready', 'running']}, 'data.repeat': {$gt: -1}})){
@@ -16,8 +16,8 @@ SyncedCron.add({
                 return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
             }
 
-            const patterns = ["Rotate", "Fade", "Blink", "Solid", "MultiFade", "MultiJump"];
-            const colors = ['RED', 'GREEN', 'BLUE'];
+            const patterns = ["Fade", "Blink", "Solid"];
+            const colors = ['RED', 'GREEN', 'BLUE', 'TEAL', 'WHITE'];
 
             Meteor.call('addCommand', patterns[getRandomInt(0, patterns.length)], colors[getRandomInt(0, colors.length)])
         }
@@ -40,13 +40,13 @@ if(Meteor.isServer){
         });
 
         //TEMPORARY TESTING CODE
-        Job.processJobs('jobs', 'commandTree', {concurrency:1, workTimeout: 240 * 1000}, function(job, cb) {
-                Meteor.setTimeout(function(){job.done(); cb();}, 5000);
-        });
+        //Job.processJobs('jobs', 'commandTree', {concurrency:1, workTimeout: 240 * 1000}, function(job, cb) {
+        //        Meteor.setTimeout(function(){job.done(); cb();}, 5000);
+        //});
 
         Meteor.methods({
             addCommand(pattern, color){
-                let actions = [createAction('ALL', 'ON', 250)];
+                let actions = [createAction('ALL', 'ON', 500)];
                 let repeat = -1;
                 switch(pattern){
                     case "Rotate":
@@ -54,18 +54,19 @@ if(Meteor.isServer){
                             actions.push(createAction([i], color, 500));
                         }
                         for(let i = 5; i >= 0; i--){
-                            actions.push(createAction([i], 'OFF', 250));
+                            actions.push(createAction([i], 'OFF', 500));
                         }
                         for(let i = 5; i >= 0; i--){
-                            actions.push(createAction([i], 'ON', 250));
+                            actions.push(createAction([i], 'ON', 500));
                         }
                         break;
                     case "Fade":
+                        actions.push(createAction('ALL', color, 1000));
                         for(let i = 0; i < 9; i++){
-                            actions.push(createAction('ALL', 'FADE_OUT', 250));
+                            actions.push(createAction('ALL', 'BRIGHTNESS_DOWN', 500));
                         }
                         for(let i = 0; i < 9; i++){
-                            actions.push(createAction('ALL', 'FADE_IN', 250));
+                            actions.push(createAction('ALL', 'BRIGHTNESS_UP', 500));
                         }
                         repeat = 2;
                         break;
@@ -121,7 +122,7 @@ if(Meteor.isServer){
     function createAction(strands, key, wait){
         return {
             strands: strands,
-            key: key,
+            key: key.toUpperCase(),
             wait: wait
         }
     }
