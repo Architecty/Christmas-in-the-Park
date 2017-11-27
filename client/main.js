@@ -35,7 +35,7 @@ Template.hello.onCreated(function(){
         this.subscribe('jobs', SessionAmplify.get('job_id'));
 });
     Session.setDefault('pattern', 'Random');
-    Session.setDefault('color', 'Random');
+    Session.setDefault('color', 'RANDOM');
     Session.setDefault('whichTemplate', 'choices');
 
     if(SessionAmplify.get('job_id') === 'delay'){
